@@ -4,6 +4,7 @@ namespace Http\Controllers\Api;
 
 use App\Http\Controllers\Api\QuizQuestionController;
 use App\Models\QuizQuestion;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 //use PHPUnit\Framework\TestCase;
@@ -15,22 +16,21 @@ class QuizQuestionControllerTest extends TestCase
 
     use RefreshDatabase;
 
-    private $loggedInAndSeeded = false;
-
-    public function loginAndSeed()
+    public function testLoginAndSeed()
     {
-        if(!$this->loggedInAndSeeded) {
-            $this->seed();
 
-            Auth::loginUsingId(1);
+        $this->seed();
 
-            $this->loggedInAndSeeded = true;
-        }
+        $user = User::first();
+        auth()->loginUsingId($user->id);
+
+        $this->assertNotNull(auth()->id());
+
     }
 
     public function testStore()
     {
-        $this->loginAndSeed();
+        $this->testLoginAndSeed();
 
         $request = Request::create('/auth/api/quizQuestion', 'POST', [
             'quiz_id' => 1,
@@ -51,7 +51,7 @@ class QuizQuestionControllerTest extends TestCase
 
     public function testDestroy()
     {
-        $this->loginAndSeed();
+        $this->testLoginAndSeed();
 
         $id = $this->testStore(); //insert
 
