@@ -25,6 +25,10 @@ Vue.use(IconsPlugin);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('question-create', require('./components/question/QuestionCreate.vue').default);
+Vue.component('question-edit', require('./components/question/QuestionEdit.vue').default);
+Vue.component('quiz-create', require('./components/quiz/QuizCreate.vue').default);
+Vue.component('quiz-edit', require('./components/quiz/QuizEdit.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
