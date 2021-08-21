@@ -29,7 +29,7 @@
                 <b-form-group label="Answer 3">
                     <b-input-group>
                         <b-input-group-prepend is-text>
-                            <input v-model="answer3Enabled" type="checkbox" aria-label="Enable answer 3">
+                            <input v-model="answer3Enabled" :disabled="!answer2Enabled" type="checkbox" aria-label="Enable answer 3">
                         </b-input-group-prepend>
                         <b-input v-model="answer3" :disabled="!answer3Enabled"></b-input>
                     </b-input-group>
@@ -39,7 +39,7 @@
                 <b-form-group label="Answer 4">
                     <b-input-group>
                         <b-input-group-prepend is-text>
-                            <input v-model="answer4Enabled" type="checkbox" aria-label="Enable answer 4">
+                            <input v-model="answer4Enabled" :disabled="!answer3Enabled" type="checkbox" aria-label="Enable answer 4">
                         </b-input-group-prepend>
                         <b-input v-model="answer4" :disabled="!answer4Enabled"></b-input>
                     </b-input-group>
