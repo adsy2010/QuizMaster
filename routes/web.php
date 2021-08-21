@@ -29,9 +29,9 @@ Route::resource('quiz', App\Http\Controllers\QuizController::class)->only('index
     'edit' => 'quiz.edit.view'
 ]);
 Route::resource('question', App\Http\Controllers\QuestionController::class)->only('index', 'edit', 'create')->names([
-    'index' => 'question.index',
-    'edit' => 'question.edit',
-    'create' => 'question.create'
+    'index' => 'question.index.view',
+    'edit' => 'question.edit.view',
+    'create' => 'question.create.view'
 ]);
 
 Route::prefix('auth/api')->middleware('auth')->group(function() {
