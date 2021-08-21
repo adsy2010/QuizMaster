@@ -17,15 +17,21 @@ class QuizQuestionController extends ApiController
         $quizQuestion = new QuizQuestion();
         $quizQuestion->fill($request->all());
         $quizQuestion->save();
-        return $quizQuestion;
+        return response()->json($quizQuestion);
     }
 
     /**
      * @param QuizQuestion $quizQuestion
-     * @return bool|null
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(QuizQuestion $quizQuestion)
+    public function destroy(Request $request)
     {
-        return $quizQuestion->delete();
+        $quizQuestion = QuizQuestion::find($request->quizQuestion);
+        if(!empty($quizQuestion)) {
+            $result = $quizQuestion->delete();
+        } else {
+            $result = false;
+        }
+        return response()->json($result);
     }
 }

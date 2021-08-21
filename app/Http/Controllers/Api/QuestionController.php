@@ -13,7 +13,7 @@ class QuestionController extends ApiController
      */
     public function myIndex()
     {
-        return Question::where('user_id', '=', Auth::id())->get();
+        return response()->json(Question::where('user_id', '=', Auth::id())->get());
     }
 
     /**
@@ -28,18 +28,19 @@ class QuestionController extends ApiController
         $question->fill($request->all());
         $question->user_id = Auth::id();
         $question->save();
-        return  $question;
+        return response()->json($question);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Question $question)
+    public function show(Request $request)
     {
-        return $question;
+        $question = Question::find($request->question);
+        return response()->json($question);
     }
 
 
@@ -48,24 +49,31 @@ class QuestionController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request)
     {
+        $question = Question::find($request->question);
         $question->fill($request->all());
         $question->save();
-        return  $question;
+        return response()->json($question);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Question $question)
+    public function destroy(Request $request)
     {
         //TODO: Delete all related quiz questions
-        $question->delete();
+        $question = Question::find($request->question);
+        if(!empty($question)) {
+            $result = $question->delete();
+        } else {
+            $result = false;
+        }
+        return response()->json($result);
     }
 }

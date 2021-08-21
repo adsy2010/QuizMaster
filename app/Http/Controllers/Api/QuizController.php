@@ -11,18 +11,18 @@ class QuizController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return Quiz::withCount('questions')->get();
+        return response()->json(Quiz::withCount('questions')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -30,18 +30,19 @@ class QuizController extends ApiController
         $quiz->fill($request->all());
         $quiz->user_id = Auth::id();
         $quiz->save();
-        return  $quiz;
+        return response()->json($quiz);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Quiz $quiz)
+    public function show(Request $request)
     {
-        return $quiz->load('questions');
+        $quiz = Quiz::find($request->quiz);
+        return response()->json($quiz->load('questions'));
     }
 
     /**
@@ -49,24 +50,31 @@ class QuizController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Quiz $quiz)
+    public function update(Request $request)
     {
+        $quiz = Quiz::find($request->quiz);
         $quiz->fill($request->all());
         $quiz->save();
-        return  $quiz;
+        return response()->json($quiz);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(Request $request)
     {
         //TODO: Delete all related quiz questions
-        $quiz->delete();
+        $quiz = Quiz::find($request->quiz);
+        if(!empty($quiz)) {
+            $result = $quiz->delete();
+        } else {
+            $result = false;
+        }
+        return response()->json($result);
     }
 }
