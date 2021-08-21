@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 //use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
-use function PHPUnit\Framework\assertNotNull;
 
 class QuizControllerTest extends TestCase
 {
@@ -25,7 +24,7 @@ class QuizControllerTest extends TestCase
         $user = User::first();
         auth()->loginUsingId($user->id);
 
-        assertNotNull(auth()->id());
+        $this->assertNotNull(auth()->id());
 
     }
 
