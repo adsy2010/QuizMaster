@@ -22,6 +22,18 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::resource('quiz', App\Http\Controllers\QuizController::class)->only('index', 'show', 'create', 'edit')->names([
+    'index' => 'quiz.index.view',
+    'show' => 'quiz.show.view',
+    'create' => 'quiz.create.view',
+    'edit' => 'quiz.edit.view'
+]);
+Route::resource('question', App\Http\Controllers\QuestionController::class)->only('index', 'edit', 'create')->names([
+    'index' => 'question.index',
+    'edit' => 'question.edit',
+    'create' => 'question.create'
+]);
+
 Route::prefix('auth/api')->middleware('auth')->group(function() {
     Route::resource('quiz', App\Http\Controllers\Api\QuizController::class)->except('create', 'edit');
     Route::resource('question', App\Http\Controllers\Api\QuestionController::class)->except('index', 'create', 'edit');
