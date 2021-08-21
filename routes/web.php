@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('auth/api')->middleware('auth')->group(function() {
+    Route::resource('quiz', App\Http\Controllers\Api\QuizController::class)->except('create', 'edit');
+    Route::resource('question', App\Http\Controllers\Api\QuestionController::class)->except('index', 'create', 'edit');
+    Route::get('my-questions',[App\Http\Controllers\Api\QuestionController::class, 'myIndex'])->name('my.question.index');
+    Route::resource('quizQuestion', App\Http\Controllers\Api\QuizQuestionController::class)->only('store', 'destroy');
+});
